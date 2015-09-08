@@ -1,0 +1,37 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.wqy.ganhuo.ui.fragment.AndroidFragment">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/android_swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.wqy.ganhuo.view.AutoLoadRecyclerView
+            android:id="@+id/android_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        style="?android:attr/progressBarStyleSmall"
+        android:visibility="visible"
+        android:layout_gravity="center" />
+
+    <ProgressBar
+        android:id="@+id/loading_more_progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:indeterminate="true"
+        android:layout_gravity="bottom"
+        android:visibility="invisible"
+        android:indeterminateDrawable="@drawable/progress_indeterminate_horizontal_holo"
+        />
+
+</FrameLayout>
