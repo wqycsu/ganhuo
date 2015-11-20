@@ -6,4 +6,5 @@
     <dimen name="text_size_subtitle">14sp</dimen>
     <dimen name="text_size_body1">14sp</dimen>
     <dimen name="text_size_display">45sp</dimen>
+    <dimen name="padding_top">0dp</dimen>
 </resources>

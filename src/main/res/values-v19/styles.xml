@@ -1,5 +1,5 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -9,6 +9,7 @@
         <item name="colorControlNormal">@color/colorNormal</item>
         <item name="android:textColorPrimary">@color/colorNormal</item>
         <item name="searchViewStyle">@style/MySearchViewStyle</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="Theme.MyTheme" parent="Theme.AppCompat">

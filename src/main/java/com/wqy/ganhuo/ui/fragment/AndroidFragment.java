@@ -129,6 +129,7 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
                 adapter.notifyDataSetChanged();
                 loadingMoreProgressBar.setVisibility(View.INVISIBLE);
                 mLoadFinishCallback.onLoadFinish();
+                swipeRefreshLayout.setRefreshing(false);
             }
         }, new Response.ErrorListener() {
 
