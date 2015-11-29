@@ -41,23 +41,4 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        //主Activity不支持滑动返回
-        if(!(this instanceof MainActivity)) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    startX = event.getX();
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    distanceX = event.getX() - startX;
-                    if(distanceX>=screenWidth/2){
-                        super.onBackPressed();
-                    }
-                    break;
-            }
-        }
-        return super.onTouchEvent(event);
-    }
-
 }

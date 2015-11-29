@@ -36,6 +36,7 @@ public class AndroidContentAdapter extends RecyclerView.Adapter<ViewHolder>{
 
     public interface LoadDataListener{
         void loadData(int page);
+        void loadDataFromDB(int page);
     }
 
     public interface OnItemClickListener{
@@ -132,7 +133,8 @@ public class AndroidContentAdapter extends RecyclerView.Adapter<ViewHolder>{
             if(listener!=null)
                 listener.loadData(page);
         } else {
-//            loadCache();
+            if(listener!=null)
+                listener.loadDataFromDB(page);
         }
 
     }

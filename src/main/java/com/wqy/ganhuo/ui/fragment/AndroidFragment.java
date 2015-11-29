@@ -23,12 +23,14 @@ import com.wqy.ganhuo.R;
 import com.wqy.ganhuo.adapter.AndroidContentAdapter;
 import com.wqy.ganhuo.animators.SlideInOutRightItemAnimator;
 import com.wqy.ganhuo.base.BaseFragment;
+import com.wqy.ganhuo.cache.AndroidCacheUtil;
 import com.wqy.ganhuo.interfaces.LoadFinishCallback;
 import com.wqy.ganhuo.model.AndroidContentItem;
 import com.wqy.ganhuo.network.RequestForAndroid;
 import com.wqy.ganhuo.ui.AndroidContentDetailActivity;
 import com.wqy.ganhuo.ui.MainActivity;
 import com.wqy.ganhuo.utils.Constants;
+import com.wqy.ganhuo.utils.JSONParserUtil;
 import com.wqy.ganhuo.utils.ShowToast;
 import com.wqy.ganhuo.view.AutoLoadRecyclerView;
 
@@ -130,6 +132,7 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
                 loadingMoreProgressBar.setVisibility(View.INVISIBLE);
                 mLoadFinishCallback.onLoadFinish();
                 swipeRefreshLayout.setRefreshing(false);
+                AndroidCacheUtil.getInstance().addCache(JSONParserUtil.contentItemsToJsonString(response), page);
             }
         }, new Response.ErrorListener() {
 
@@ -141,6 +144,12 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
                 loadingMoreProgressBar.setVisibility(View.INVISIBLE);
             }
         }));
+    }
+
+    @Override
+    public void loadDataFromDB(int page) {
+        ArrayList cacheData = AndroidCacheUtil.getInstance().getCacheByPage(page);
+        items.addAll(cacheData);
     }
 
     @Override

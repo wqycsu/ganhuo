@@ -16,7 +16,7 @@ public class JSONParserUtil {
 
     static final String RESULTS = "results";
 
-    public static <T> List<T> pareseJSON(String jsonStr, Class<T> clazz) {
+    public static <T> List<T> parseJSON(String jsonStr, Class<T> clazz) {
         String result = extractResult(jsonStr);
         List<T> list = null;
         if (!TextUtils.isEmpty(result)) {
@@ -33,5 +33,9 @@ public class JSONParserUtil {
             return jsonObject.get(RESULTS).toString();
         }
         return null;
+    }
+
+    public static String contentItemsToJsonString(ArrayList arrayList) {
+        return JSON.toJSONString(arrayList, true);
     }
 }

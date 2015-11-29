@@ -34,7 +34,7 @@ public class RequestForAndroid extends Request<ArrayList<AndroidContentItem>>{
         try {
             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             return Response.success(
-                    (ArrayList<AndroidContentItem>) JSONParserUtil.pareseJSON(jsonString,AndroidContentItem.class),
+                    (ArrayList<AndroidContentItem>) JSONParserUtil.parseJSON(jsonString,AndroidContentItem.class),
                     HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

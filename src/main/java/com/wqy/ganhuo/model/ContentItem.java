@@ -1,9 +1,11 @@
 package com.wqy.ganhuo.model;
 
+import java.io.Serializable;
+
 /**
  * Created by weiquanyun on 15/8/19.
  */
-public abstract class ContentItem {
+public abstract class ContentItem implements Serializable{
     String who;
     String publishedAt;
     String desc;

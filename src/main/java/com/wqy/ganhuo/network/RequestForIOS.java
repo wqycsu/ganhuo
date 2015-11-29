@@ -28,7 +28,7 @@ public class RequestForIOS extends Request<List<IOSContentItem>>{
     protected Response<List<IOSContentItem>> parseNetworkResponse(NetworkResponse response) {
         try {
             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-            return Response.success(JSONParserUtil.pareseJSON(jsonString,IOSContentItem.class),
+            return Response.success(JSONParserUtil.parseJSON(jsonString,IOSContentItem.class),
                     HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
