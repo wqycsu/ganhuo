@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by weiquanyun on 15/8/11.
+ * @deprecated
  */
 public class MenuFragment extends BaseFragment{
     RecyclerView menus;
@@ -157,5 +158,10 @@ public class MenuFragment extends BaseFragment{
                 break;
         }
         return fragment;
+    }
+
+    @Override
+    public void onRefresh() {
+
     }
 }

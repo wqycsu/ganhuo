@@ -2,21 +2,18 @@ package com.wqy.ganhuo.ui;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.internal.widget.TintManager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.wqy.ganhuo.R;
 import com.wqy.ganhuo.base.BaseActivity;
@@ -28,6 +25,9 @@ import com.wqy.ganhuo.utils.ShowToast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+/**
+ * @deprecated
+ */
 public class MainActivity extends BaseActivity {
 
     @Bind(R.id.drawer_layout)

@@ -8,4 +8,11 @@
 
     <color name="cardview_white">#FFFFFF</color>
     <color name="cardview_gray">#E0E0E0</color>
+
+    <color name="common_text_color_white">#ffffffff</color>
+    <color name="common_text_color">#ff333333</color>
+    <color name="common_text_color2">#ff666666</color>
+    <color name="common_text_color3">#999999</color>
+    <color name="common_text_black">#ff000000</color>
+    <color name="common_text_color_blue">#ff00b4ff</color>
 </resources>

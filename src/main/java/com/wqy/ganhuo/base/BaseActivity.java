@@ -1,17 +1,11 @@
 package com.wqy.ganhuo.base;
 
 import android.graphics.Point;
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.internal.widget.TintManager;
-import android.view.MotionEvent;
-import android.view.Window;
-import android.view.WindowManager;
+import android.support.v7.app.AppCompatActivity;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wqy.ganhuo.R;
-import com.wqy.ganhuo.ui.MainActivity;
 import com.wqy.ganhuo.utils.CommonUtil;
 
 public class BaseActivity extends AppCompatActivity {

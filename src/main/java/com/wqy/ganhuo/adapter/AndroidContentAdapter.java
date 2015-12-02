@@ -1,15 +1,10 @@
 package com.wqy.ganhuo.adapter;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.wqy.ganhuo.R;
 import com.wqy.ganhuo.model.AndroidContentItem;
@@ -17,9 +12,6 @@ import com.wqy.ganhuo.network.NetworkUtil;
 import com.wqy.ganhuo.utils.ShowToast;
 
 import java.util.ArrayList;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by weiquanyun on 15/8/17.
@@ -144,25 +136,4 @@ public class AndroidContentAdapter extends RecyclerView.Adapter<ViewHolder>{
         loadDataByNetworkType();
     }
 
-}
-
-class ViewHolder extends RecyclerView.ViewHolder{
-
-    @Bind(R.id.android_card)
-    CardView cardView;
-    @Bind(R.id.desc)
-    TextView desc;
-    @Bind(R.id.who)
-    TextView who;
-    @Bind(R.id.publish_at)
-    TextView publishAt;
-    @Bind(R.id.img_share)
-    ImageView imgShare;
-    @Bind(R.id.img_star)
-    ImageView imgStar;
-
-    public ViewHolder(View itemView) {
-        super(itemView);
-        ButterKnife.bind(this,itemView);
-    }
 }

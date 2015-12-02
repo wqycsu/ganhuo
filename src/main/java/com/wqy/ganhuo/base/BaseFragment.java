@@ -9,12 +9,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.wqy.ganhuo.network.RequestManager;
 import com.wqy.ganhuo.ui.MainActivity;
+import com.wqy.ganhuo.ui.MainDrawerActivity;
 import com.wqy.ganhuo.utils.ShowToast;
 
 /**
  * Created by weiquanyun on 15/8/11.
  */
-public class BaseFragment extends Fragment{
+public abstract class BaseFragment extends Fragment implements MainDrawerActivity.OnRefreshListener{
 
     protected Toolbar toolbar;
     protected Activity mActivity;
@@ -23,18 +24,20 @@ public class BaseFragment extends Fragment{
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.mActivity = activity;
-        if(activity instanceof MainActivity){
+        if (activity instanceof MainActivity) {
             toolbar = ((MainActivity) activity).getToolbar();
-        }else{
+        } else if (activity instanceof MainDrawerActivity) {
+            toolbar = ((MainDrawerActivity) activity).getToolbar();
+        } else {
             toolbar = null;
         }
     }
 
-    protected void executeRequest(Request request){
+    protected void executeRequest(Request request) {
         RequestManager.addRequest(request, this);
     }
 
-    protected Response.ErrorListener errorListener(){
+    protected Response.ErrorListener errorListener() {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -48,4 +51,7 @@ public class BaseFragment extends Fragment{
         super.onDestroy();
         RequestManager.canAllByTag(this);
     }
+
+    @Override
+    public abstract void onRefresh();
 }

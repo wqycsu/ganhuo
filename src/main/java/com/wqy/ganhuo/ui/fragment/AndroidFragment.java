@@ -29,6 +29,7 @@ import com.wqy.ganhuo.model.AndroidContentItem;
 import com.wqy.ganhuo.network.RequestForAndroid;
 import com.wqy.ganhuo.ui.AndroidContentDetailActivity;
 import com.wqy.ganhuo.ui.MainActivity;
+import com.wqy.ganhuo.ui.MainDrawerActivity;
 import com.wqy.ganhuo.utils.Constants;
 import com.wqy.ganhuo.utils.JSONParserUtil;
 import com.wqy.ganhuo.utils.ShowToast;
@@ -42,7 +43,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AndroidFragment extends BaseFragment implements AndroidContentAdapter.LoadDataListener, AndroidContentAdapter.OnItemClickListener {
+public class AndroidFragment extends BaseFragment implements AndroidContentAdapter.LoadDataListener, AndroidContentAdapter.OnItemClickListener, MainDrawerActivity.OnRefreshListener {
 
     @Bind(R.id.android_recycler_view)
     AutoLoadRecyclerView recyclerView;
@@ -71,6 +72,9 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
         super.onAttach(activity);
         if (toolbar == null) {
             throw new RuntimeException("AndroidFragment需要attach到MainActivity中！");
+        }
+        if(activity instanceof MainDrawerActivity) {
+            ((MainDrawerActivity) activity).setOnRefreshListener(this);
         }
         toolbar.setTitle("Android");
     }
@@ -168,5 +172,13 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
     @Override
     public void onItemLongClick(View view, int position) {
 
+    }
+
+    @Override
+    public void onRefresh() {
+        if(adapter != null) {
+            swipeRefreshLayout.setRefreshing(true);
+            adapter.loadFirst();
+        }
     }
 }

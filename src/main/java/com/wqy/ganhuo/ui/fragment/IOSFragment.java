@@ -25,6 +25,7 @@ import com.wqy.ganhuo.interfaces.LoadFinishCallback;
 import com.wqy.ganhuo.model.IOSContentItem;
 import com.wqy.ganhuo.network.RequestForIOS;
 import com.wqy.ganhuo.ui.AndroidContentDetailActivity;
+import com.wqy.ganhuo.ui.MainDrawerActivity;
 import com.wqy.ganhuo.utils.ShowToast;
 import com.wqy.ganhuo.view.AutoLoadRecyclerView;
 
@@ -68,6 +69,9 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
         super.onAttach(activity);
         if (toolbar == null) {
             throw new RuntimeException("IOSFragment需要attach到MainActivity中！");
+        }
+        if(activity instanceof MainDrawerActivity) {
+            ((MainDrawerActivity) activity).setOnRefreshListener(this);
         }
         toolbar.setTitle("IOS");
     }
@@ -163,5 +167,13 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
     @Override
     public void onItemLongClick(View view, int position) {
 
+    }
+
+    @Override
+    public void onRefresh() {
+        if(adapter != null) {
+            mSwipRefreshLayout.setRefreshing(true);
+            adapter.loadFirst();
+        }
     }
 }

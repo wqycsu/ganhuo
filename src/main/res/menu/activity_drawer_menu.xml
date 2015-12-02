@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:title="@string/my_favorite">
+        <menu>
+            <item
+                android:id="@+id/android_favorite"
+                android:icon="@mipmap/ic_launcher"
+                android:checkable="true"
+                android:title="@string/android"
+                app:itemTextColor="@color/common_text_color"/>
+            <item
+                android:id="@+id/ios_favorite"
+                android:icon="@mipmap/ic_launcher"
+                android:checkable="true"
+                android:title="@string/ios"
+                app:itemTextColor="@color/common_text_color"/>
+        </menu>
+    </item>
+
+</menu>
