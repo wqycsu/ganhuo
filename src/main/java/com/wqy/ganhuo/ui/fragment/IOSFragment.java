@@ -21,11 +21,13 @@ import com.android.volley.VolleyError;
 import com.wqy.ganhuo.R;
 import com.wqy.ganhuo.adapter.IOSContentAdapter;
 import com.wqy.ganhuo.base.BaseFragment;
+import com.wqy.ganhuo.cache.IOSCacheUtil;
 import com.wqy.ganhuo.interfaces.LoadFinishCallback;
 import com.wqy.ganhuo.model.IOSContentItem;
 import com.wqy.ganhuo.network.RequestForIOS;
 import com.wqy.ganhuo.ui.AndroidContentDetailActivity;
 import com.wqy.ganhuo.ui.MainDrawerActivity;
+import com.wqy.ganhuo.utils.JSONParserUtil;
 import com.wqy.ganhuo.utils.ShowToast;
 import com.wqy.ganhuo.view.AutoLoadRecyclerView;
 
@@ -73,7 +75,6 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
         if(activity instanceof MainDrawerActivity) {
             ((MainDrawerActivity) activity).setOnRefreshListener(this);
         }
-        toolbar.setTitle("IOS");
     }
 
     @Override
@@ -122,17 +123,19 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
     }
 
     @Override
-    public void loadData(int page) {
+    public void loadData(final int page) {
         RequestForIOS requestForIOS = new RequestForIOS(IOSContentItem.getRequestUrl(1),
-                new Response.Listener<List<IOSContentItem>>() {
+                new Response.Listener<ArrayList<IOSContentItem>>() {
                     @Override
-                    public void onResponse(List<IOSContentItem> response) {
+                    public void onResponse(ArrayList<IOSContentItem> response) {
                         items.addAll(response);
                         mProgressBar.hide();
                         adapter.notifyDataSetChanged();
+                        mSwipRefreshLayout.setRefreshing(false);
                         //load more
                         loadingMoreProgressBar.setVisibility(View.GONE);
                         mLoadFinishCallback.onLoadFinish();
+                        IOSCacheUtil.getInstance().addCache(JSONParserUtil.contentItemsToJsonString(response), page);
                     }
                 },
                 new Response.ErrorListener(){
@@ -147,6 +150,11 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
                 });
         requestForIOS.setRetryPolicy(new DefaultRetryPolicy());
         executeRequest(requestForIOS);
+    }
+
+    @Override
+    public void loadCache(int page) {
+        items.addAll(IOSCacheUtil.getInstance().getCacheByPage(page));
     }
 
     @Override

@@ -15,20 +15,20 @@ import java.util.List;
 /**
  * Created by weiquanyun on 15/8/30.
  */
-public class RequestForIOS extends Request<List<IOSContentItem>>{
+public class RequestForIOS extends Request<ArrayList<IOSContentItem>>{
 
-    Response.Listener<List<IOSContentItem>> listener;
+    Response.Listener<ArrayList<IOSContentItem>> listener;
 
-    public RequestForIOS(String url, Response.Listener<List<IOSContentItem>> responseListener, Response.ErrorListener listener) {
+    public RequestForIOS(String url, Response.Listener<ArrayList<IOSContentItem>> responseListener, Response.ErrorListener listener) {
         super(Method.GET, url, listener);
         this.listener = responseListener;
     }
 
     @Override
-    protected Response<List<IOSContentItem>> parseNetworkResponse(NetworkResponse response) {
+    protected Response<ArrayList<IOSContentItem>> parseNetworkResponse(NetworkResponse response) {
         try {
             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-            return Response.success(JSONParserUtil.parseJSON(jsonString,IOSContentItem.class),
+            return Response.success((ArrayList<IOSContentItem>)JSONParserUtil.parseJSON(jsonString,IOSContentItem.class),
                     HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -37,7 +37,7 @@ public class RequestForIOS extends Request<List<IOSContentItem>>{
     }
 
     @Override
-    protected void deliverResponse(List<IOSContentItem> response) {
+    protected void deliverResponse(ArrayList<IOSContentItem> response) {
         listener.onResponse(response);
     }
 }

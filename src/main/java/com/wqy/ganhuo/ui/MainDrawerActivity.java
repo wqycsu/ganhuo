@@ -70,7 +70,7 @@ public class MainDrawerActivity extends BaseActivity
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-
+        toolbar.setTitle(getString(R.string.app_name));
         // Set the padding to match the Status Bar height
         appBarLayout.setPadding(0, getStatusBarHeight(), 0, 0);
 //        toolbar.setPadding(0, getStatusBarHeight(), 0, 0);

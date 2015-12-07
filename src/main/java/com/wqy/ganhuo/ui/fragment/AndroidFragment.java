@@ -76,7 +76,6 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
         if(activity instanceof MainDrawerActivity) {
             ((MainDrawerActivity) activity).setOnRefreshListener(this);
         }
-        toolbar.setTitle("Android");
     }
 
     @Override

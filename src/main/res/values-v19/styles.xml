@@ -9,6 +9,7 @@
         <item name="colorControlNormal">@color/colorNormal</item>
         <item name="searchViewStyle">@style/MySearchViewStyle</item>
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="Theme.MyTheme" parent="Theme.AppCompat">

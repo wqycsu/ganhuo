@@ -10,4 +10,6 @@ public class Constants {
     public static final String IOS_REQUEST_URL = "http://gank.avosapps.com/api/data/iOS/";
     public static final String PICTURE_REQUEST_URL = "http://gank.avosapps.com/api/data/福利/";
     public static final String VIDEO_REQUEST_URL = "http://gank.avosapps.com/api/data/休息视频/";
+    public static final int PLATFORM_TYPE_ANDROID = 0;
+    public static final int PLATFORM_TYPE_IOS = 1;
 }

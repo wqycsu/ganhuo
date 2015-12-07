@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.fastjson.JSON;
 import com.wqy.ganhuo.R;
+import com.wqy.ganhuo.cache.FavoriteCacheUtil;
 import com.wqy.ganhuo.model.AndroidContentItem;
 import com.wqy.ganhuo.network.NetworkUtil;
 import com.wqy.ganhuo.utils.ShowToast;
@@ -64,6 +66,7 @@ public class AndroidContentAdapter extends RecyclerView.Adapter<ViewHolder>{
             @Override
             public void onClick(View v) {
                 ShowToast.toastLong("收藏按钮点击");
+                FavoriteCacheUtil.getInstance().addCache(JSON.toJSONString(contentItem), 0);
                 contentItem.setIsStared(!contentItem.isStared());
                 if(contentItem.isStared()){
                     holder.imgStar.setImageResource(R.mipmap.ic_star_red_50);

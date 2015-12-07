@@ -3,14 +3,10 @@ package com.wqy.ganhuo.cache;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.wqy.ganhuo.base.AppApplication;
 import com.wqy.ganhuo.greendao.AndroidCache;
 import com.wqy.ganhuo.greendao.AndroidCacheDao;
 import com.wqy.ganhuo.model.AndroidContentItem;
-
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;

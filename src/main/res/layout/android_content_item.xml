@@ -8,6 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_card_view"
+    android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="2dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true"
@@ -29,12 +30,12 @@
         <TextView
             android:id="@+id/desc"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_toLeftOf="@id/publish_at"
             android:layout_alignParentLeft="true"
             android:layout_marginRight="10dp"
             android:gravity="left"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:text="短信开源App"/>
         <TextView
             android:id="@+id/who"

@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.fastjson.JSON;
 import com.wqy.ganhuo.R;
+import com.wqy.ganhuo.cache.FavoriteCacheUtil;
 import com.wqy.ganhuo.model.IOSContentItem;
 import com.wqy.ganhuo.network.NetworkUtil;
 import com.wqy.ganhuo.utils.ShowToast;
@@ -27,6 +29,7 @@ public class IOSContentAdapter extends RecyclerView.Adapter<ViewHolder>{
 
     public interface LoadDataListener{
         void loadData(int page);
+        void loadCache(int page);
     }
 
     public interface OnItemClickListener{
@@ -62,6 +65,7 @@ public class IOSContentAdapter extends RecyclerView.Adapter<ViewHolder>{
             @Override
             public void onClick(View v) {
                 contentItem.setIsStared(!contentItem.isStared());
+                FavoriteCacheUtil.getInstance().addCache(JSON.toJSONString(contentItem), 0);
                 ShowToast.toastLong("收藏按钮点击:"+contentItem.isStared());
             }
         });
@@ -118,7 +122,9 @@ public class IOSContentAdapter extends RecyclerView.Adapter<ViewHolder>{
             if(listener!=null)
                 listener.loadData(page);
         } else {
-//            loadCache();
+            if(listener != null) {
+                listener.loadCache(page);
+            }
         }
 
     }
