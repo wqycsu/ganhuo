@@ -6,6 +6,7 @@ import android.content.Context;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.wqy.ganhuo.cache.FavoriteCacheUtil;
 import com.wqy.ganhuo.greendao.DaoMaster;
 import com.wqy.ganhuo.greendao.DaoSession;
 import com.wqy.ganhuo.utils.Constants;
@@ -27,6 +28,7 @@ public class AppApplication extends Application {
         super.onCreate();
         initImageLoader();
         context = this;
+        loadFavoriteCache();
     }
 
     public static Context getAppContext() {
@@ -69,5 +71,12 @@ public class AppApplication extends Application {
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
+    }
+
+    /**
+     * 为了在Android和IOS界面展示收藏项目,这里使用同步方法,待优化
+     */
+    private void loadFavoriteCache() {
+        FavoriteCacheUtil.getInstance().getCacheByPage(0);
     }
 }

@@ -52,4 +52,38 @@ public class IOSContentItem extends ContentItem{
         return items;
     }
 
+    public static IOSContentItem parseContentItem2IOSItem(FavoriteContentItem item) {
+        IOSContentItem iosContentItem = new IOSContentItem();
+        iosContentItem.setIsStared(true);
+        iosContentItem.setCreatedAt(item.getCreatedAt());
+        iosContentItem.setDesc(item.getDesc());
+        iosContentItem.setObjectId(item.getObjectId());
+        iosContentItem.setPublishedAt(item.getPublishedAt());
+        iosContentItem.setType(item.getType());
+        iosContentItem.setWho(item.getWho());
+        iosContentItem.setUrl(item.getUrl());
+        iosContentItem.setUpdatedAt(item.getUpdatedAt());
+        iosContentItem.setUsed(item.getUsed());
+        return iosContentItem;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IOSContentItem that = (IOSContentItem) o;
+
+        return objectId.equals(that.objectId) && url.equals(that.getUrl());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result = 31 * result + objectId.hashCode();
+        result = 31 * result + url.hashCode();
+        return result;
+    }
+
 }

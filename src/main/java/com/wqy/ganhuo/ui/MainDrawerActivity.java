@@ -8,6 +8,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
@@ -25,6 +26,7 @@ import android.view.MenuItem;
 import com.wqy.ganhuo.R;
 import com.wqy.ganhuo.adapter.FragmentPageAdapter;
 import com.wqy.ganhuo.base.BaseActivity;
+import com.wqy.ganhuo.base.BaseFragment;
 import com.wqy.ganhuo.model.FragmentPageItem;
 import com.wqy.ganhuo.ui.fragment.AndroidFragment;
 import com.wqy.ganhuo.ui.fragment.IOSFragment;
@@ -80,7 +82,14 @@ public class MainDrawerActivity extends BaseActivity
             @Override
             public void onClick(View view) {
                 if(onRefreshListener != null) {
-                    onRefreshListener.onRefresh();
+                    int index = viewPager.getCurrentItem();
+                    Fragment fragment = adapter.getItem(index);
+                    if(fragment instanceof AndroidFragment) {
+                        ((AndroidFragment)fragment).onRefresh();
+                    }
+                    if(fragment instanceof IOSFragment) {
+                        ((IOSFragment)fragment).onRefresh();
+                    }
                 }
             }
         });

@@ -87,7 +87,7 @@ public class IOSContentAdapter extends RecyclerView.Adapter<ViewHolder>{
             }
         });
 
-        if(contentItem.isStared()){
+        if(FavoriteCacheUtil.getInstance().getFavoriteIOSContentItems().contains(contentItem)){
             holder.imgStar.setImageResource(R.mipmap.ic_star_red_50);
         }else{
             holder.imgStar.setImageResource(R.drawable.bg_star_button);

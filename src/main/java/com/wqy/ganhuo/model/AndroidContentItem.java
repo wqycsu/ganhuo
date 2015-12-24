@@ -51,4 +51,38 @@ public class AndroidContentItem extends ContentItem {
         }
         return items;
     }
+
+    public static AndroidContentItem parseContentItem2AndroidItem(FavoriteContentItem item) {
+        AndroidContentItem androidContentItem = new AndroidContentItem();
+        androidContentItem.setIsStared(true);
+        androidContentItem.setCreatedAt(item.getCreatedAt());
+        androidContentItem.setDesc(item.getDesc());
+        androidContentItem.setObjectId(item.getObjectId());
+        androidContentItem.setPublishedAt(item.getPublishedAt());
+        androidContentItem.setType(item.getType());
+        androidContentItem.setWho(item.getWho());
+        androidContentItem.setUrl(item.getUrl());
+        androidContentItem.setUpdatedAt(item.getUpdatedAt());
+        androidContentItem.setUsed(item.getUsed());
+        return androidContentItem;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AndroidContentItem that = (AndroidContentItem) o;
+
+        return objectId.equals(that.objectId) && url.equals(that.getUrl());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result = 31 * result + objectId.hashCode();
+        result = 31 * result + url.hashCode();
+        return result;
+    }
 }

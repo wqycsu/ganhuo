@@ -23,4 +23,8 @@
     <string name="my_favorite">我的收藏</string>
     <string name="android">Android</string>
     <string name="ios">IOS</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
