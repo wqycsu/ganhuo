@@ -15,6 +15,7 @@ public class FragmentPageItem {
     private final int mDividerColor;
     private final Class mFragment;
     private final Bundle argument;
+    private Fragment fragment;
 
     public FragmentPageItem(String title, int indicatorColor, int dividerColor, Class<? extends Fragment> fragment, Bundle argument){
         this.mTitle = title;
@@ -25,6 +26,9 @@ public class FragmentPageItem {
     }
 
     public Fragment createFragment(Class<? extends Fragment> fragment, Bundle argument){
+        if(this.fragment != null) {
+            return this.fragment;
+        }
         if(argument==null)
             return createFragmentWithNullArg(fragment);
         Fragment f = null;
@@ -44,6 +48,7 @@ public class FragmentPageItem {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
+        this.fragment = f;
         return f;
     }
 
@@ -85,6 +90,7 @@ public class FragmentPageItem {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
+        this.fragment = f;
         return f;
     }
 

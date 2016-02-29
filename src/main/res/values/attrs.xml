@@ -9,4 +9,13 @@
         <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="MaterialCircleProgressBar">
+        <attr name="needShapeBg" format="boolean"/>
+        <attr name="shapeSize" format="enum">
+            <enum name="normal" value="0"/>
+            <enum name="large" value="1"/>
+        </attr>
+        <attr name="circleColor" format="reference|color"/>
+    </declare-styleable>
+
 </resources>

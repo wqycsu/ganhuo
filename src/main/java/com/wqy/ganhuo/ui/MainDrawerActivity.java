@@ -73,10 +73,6 @@ public class MainDrawerActivity extends BaseActivity
 
         setSupportActionBar(toolbar);
         toolbar.setTitle(getString(R.string.app_name));
-        // Set the padding to match the Status Bar height
-        appBarLayout.setPadding(0, getStatusBarHeight(), 0, 0);
-//        toolbar.setPadding(0, getStatusBarHeight(), 0, 0);
-//        tabLayout.setPadding(0, getStatusBarHeight(), 0, 0);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

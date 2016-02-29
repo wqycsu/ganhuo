@@ -2,34 +2,31 @@ package com.wqy.ganhuo.ui.fragment;
 
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.wqy.ganhuo.R;
 import com.wqy.ganhuo.adapter.AndroidContentAdapter;
-import com.wqy.ganhuo.animators.SlideInOutRightItemAnimator;
+import com.wqy.ganhuo.animators.SlideBottomInWithAlphaAnimator;
 import com.wqy.ganhuo.base.BaseFragment;
 import com.wqy.ganhuo.cache.AndroidCacheUtil;
 import com.wqy.ganhuo.interfaces.LoadFinishCallback;
 import com.wqy.ganhuo.model.AndroidContentItem;
 import com.wqy.ganhuo.network.RequestForAndroid;
 import com.wqy.ganhuo.ui.AndroidContentDetailActivity;
-import com.wqy.ganhuo.ui.MainActivity;
 import com.wqy.ganhuo.ui.MainDrawerActivity;
+import com.wqy.ganhuo.ui.views.MaterialCircleProgressBar;
 import com.wqy.ganhuo.utils.Constants;
 import com.wqy.ganhuo.utils.JSONParserUtil;
 import com.wqy.ganhuo.utils.ShowToast;
@@ -50,9 +47,7 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
     @Bind(R.id.android_swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.progressbar)
-    ContentLoadingProgressBar contentLoadingProgressBar;
-    @Bind(R.id.loading_more_progressbar)
-    ProgressBar loadingMoreProgressBar;
+    MaterialCircleProgressBar contentLoadingProgressBar;
 
     private ImageLoader imageLoader;
     private ArrayList<AndroidContentItem> items = new ArrayList<>();
@@ -85,7 +80,7 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
         View view = inflater.inflate(R.layout.fragment_android, container, false);
         ButterKnife.bind(this, view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setItemAnimator(new SlideInOutRightItemAnimator(recyclerView));
+        recyclerView.setItemAnimator(new SlideBottomInWithAlphaAnimator());
         recyclerView.setHasFixedSize(true);
         contentLoadingProgressBar.show();
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
@@ -103,7 +98,6 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
             @Override
             public void onLoadMore() {
                 Log.d(Constants.TAG, "load more");
-                loadingMoreProgressBar.setVisibility(View.VISIBLE);
                 adapter.loadNextPage();
             }
         });
@@ -125,16 +119,15 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
     }
 
     @Override
-    public void loadData(final int page) {
+    public void loadDataFromNet(final int page) {
         executeRequest(new RequestForAndroid(AndroidContentItem.getRequestUrl(page), new Response.Listener<ArrayList<AndroidContentItem>>() {
             @Override
             public void onResponse(ArrayList<AndroidContentItem> response) {
                 items.addAll(response);
                 contentLoadingProgressBar.hide();
-                adapter.notifyDataSetChanged();
-                loadingMoreProgressBar.setVisibility(View.INVISIBLE);
                 mLoadFinishCallback.onLoadFinish();
                 swipeRefreshLayout.setRefreshing(false);
+                adapter.notifyDataSetChanged();
                 AndroidCacheUtil.getInstance().addCache(JSONParserUtil.contentItemsToJsonString(response), page);
             }
         }, new Response.ErrorListener() {
@@ -144,7 +137,6 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
                 contentLoadingProgressBar.hide();
                 ShowToast.toastLong("加载出错了:" + error.getMessage());
                 mLoadFinishCallback.onLoadFinish();
-                loadingMoreProgressBar.setVisibility(View.INVISIBLE);
             }
         }));
     }

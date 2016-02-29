@@ -15,6 +15,15 @@ public abstract class ContentItem implements Serializable{
     String createdAt;
     String objectId;
     String updatedAt;
+    boolean isStared;
+
+    public boolean isStared() {
+        return isStared;
+    }
+
+    public void setIsStared(boolean isStared) {
+        this.isStared = isStared;
+    }
 
     public String getWho() {
         return who;

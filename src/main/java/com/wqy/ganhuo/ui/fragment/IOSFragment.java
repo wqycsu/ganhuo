@@ -27,6 +27,7 @@ import com.wqy.ganhuo.model.IOSContentItem;
 import com.wqy.ganhuo.network.RequestForIOS;
 import com.wqy.ganhuo.ui.AndroidContentDetailActivity;
 import com.wqy.ganhuo.ui.MainDrawerActivity;
+import com.wqy.ganhuo.ui.views.MaterialCircleProgressBar;
 import com.wqy.ganhuo.utils.JSONParserUtil;
 import com.wqy.ganhuo.utils.ShowToast;
 import com.wqy.ganhuo.view.AutoLoadRecyclerView;
@@ -49,9 +50,7 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
     @Bind(R.id.ios_recycler_view)
     AutoLoadRecyclerView mRecyclerView;
     @Bind(R.id.progressbar)
-    ContentLoadingProgressBar mProgressBar;
-    @Bind(R.id.loading_more_progressbar)
-    ProgressBar loadingMoreProgressBar;
+    MaterialCircleProgressBar mProgressBar;
 
     private ArrayList<IOSContentItem> items = new ArrayList<>();
     private IOSContentAdapter adapter;
@@ -99,6 +98,10 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
                     adapter.loadNextPage();
             }
         });
+        mSwipRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         mSwipRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -123,7 +126,7 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
     }
 
     @Override
-    public void loadData(final int page) {
+    public void loadDataFromNet(final int page) {
         RequestForIOS requestForIOS = new RequestForIOS(IOSContentItem.getRequestUrl(1),
                 new Response.Listener<ArrayList<IOSContentItem>>() {
                     @Override
@@ -133,7 +136,6 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
                         adapter.notifyDataSetChanged();
                         mSwipRefreshLayout.setRefreshing(false);
                         //load more
-                        loadingMoreProgressBar.setVisibility(View.GONE);
                         mLoadFinishCallback.onLoadFinish();
                         IOSCacheUtil.getInstance().addCache(JSONParserUtil.contentItemsToJsonString(response), page);
                     }
@@ -144,7 +146,6 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
                         mProgressBar.setVisibility(View.GONE);
                         ShowToast.toastLong(error.getMessage());
                         //load more
-                        loadingMoreProgressBar.setVisibility(View.GONE);
                         mLoadFinishCallback.onLoadFinish();
                     }
                 });
@@ -153,7 +154,7 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
     }
 
     @Override
-    public void loadCache(int page) {
+    public void loadDataFromDB(int page) {
         items.addAll(IOSCacheUtil.getInstance().getCacheByPage(page));
     }
 
