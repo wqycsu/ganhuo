@@ -1,11 +1,16 @@
 package com.wqy.ganhuo.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.wqy.ganhuo.greendao.AndroidCache;
+import com.wqy.ganhuo.greendao.IOSCache;
+import com.wqy.ganhuo.utils.Constants;
+
 import java.io.Serializable;
 
 /**
  * Created by weiquanyun on 15/8/19.
  */
-public abstract class ContentItem implements Serializable{
+public abstract class ContentItem implements Serializable, Comparable<ContentItem> {
     String who;
     String publishedAt;
     String desc;
@@ -13,7 +18,8 @@ public abstract class ContentItem implements Serializable{
     String url;
     boolean used;
     String createdAt;
-    String objectId;
+    @JSONField(name="_id")
+    String _id;
     String updatedAt;
     boolean isStared;
 
@@ -81,12 +87,12 @@ public abstract class ContentItem implements Serializable{
         this.used = used;
     }
 
-    public String getObjectId() {
-        return objectId;
+    public String get__id() {
+        return _id;
     }
 
-    public void setObjectId(String objectId) {
-        this.objectId = objectId;
+    public void set__id(String _id) {
+        this._id = _id;
     }
 
     public String getUpdatedAt() {
@@ -104,4 +110,40 @@ public abstract class ContentItem implements Serializable{
         return stringBuffer.toString();
     }
 
+    @Override
+    public int compareTo(ContentItem another) {
+        return -this.publishedAt.compareTo(another.publishedAt);
+    }
+
+    public AndroidCache contentImToAndroidCache(int page) {
+        AndroidCache cache = new AndroidCache();
+        cache.setCreatedAt(createdAt);
+        cache.setDesc(desc);
+        cache.setObjectId(_id);
+        cache.setPage(page);
+        cache.setPublishedAt(publishedAt);
+        cache.setUpdatedAt(updatedAt);
+        cache.setType(type);
+        cache.setPlatformType(Constants.PLATFORM_TYPE_ANDROID);
+        cache.setUrl(url);
+        cache.setUsed(used);
+        cache.setWho(who);
+        return cache;
+    }
+
+    public IOSCache contentImToIOSCache(int page) {
+        IOSCache cache = new IOSCache();
+        cache.setCreatedAt(createdAt);
+        cache.setDesc(desc);
+        cache.setObjectId(_id);
+        cache.setPage(page);
+        cache.setPublishedAt(publishedAt);
+        cache.setUpdatedAt(updatedAt);
+        cache.setType(type);
+        cache.setPlatformType(Constants.PLATFORM_TYPE_IOS);
+        cache.setUrl(url);
+        cache.setUsed(used);
+        cache.setWho(who);
+        return cache;
+    }
 }

@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/web_base_container_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -11,7 +12,7 @@
     <ProgressBar
         android:id="@+id/web_load_progress"
         android:layout_width="match_parent"
-        android:layout_height="3sp"
+        android:layout_height="3dp"
         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
         android:visibility="gone"
         android:max="100"/>

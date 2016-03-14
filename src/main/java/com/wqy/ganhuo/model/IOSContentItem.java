@@ -1,10 +1,10 @@
 package com.wqy.ganhuo.model;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.wqy.ganhuo.greendao.IOSCache;
 import com.wqy.ganhuo.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by weiquanyun on 15/8/30.
@@ -19,42 +19,42 @@ public class IOSContentItem extends ContentItem{
         return Constants.IOS_REQUEST_URL + count+ "/" + page;
     }
 
-    public static ArrayList<IOSContentItem> parseCache(JSONArray jsonArray) {
-        if (jsonArray == null) {
+    public static ArrayList<IOSContentItem> parseCache(List<IOSCache> iosCacheList) {
+        if (iosCacheList == null) {
             return null;
         }
-        ArrayList<IOSContentItem> items = new ArrayList<IOSContentItem>(jsonArray.size());
-        for (int i = 0; i < jsonArray.size(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
+        ArrayList<IOSContentItem> items = new ArrayList<IOSContentItem>(iosCacheList.size());
+        IOSCache androidCache;
+        for (int i = 0; i < iosCacheList.size(); i++) {
+            androidCache = iosCacheList.get(i);
             IOSContentItem iosContentItem = new IOSContentItem();
-            iosContentItem.setIsStared(jsonObject.getBoolean("isStared"));
-            iosContentItem.setCreatedAt(jsonObject.getString("createdAt"));
-            iosContentItem.setDesc(jsonObject.getString("desc"));
-            iosContentItem.setObjectId(jsonObject.getString("objectId"));
-            iosContentItem.setPublishedAt(jsonObject.getString("publishedAt"));
-            iosContentItem.setType(jsonObject.getString("type"));
-            iosContentItem.setWho(jsonObject.getString("who"));
-            iosContentItem.setUrl(jsonObject.getString("url"));
-            iosContentItem.setUpdatedAt(jsonObject.getString("updatedAt"));
-            iosContentItem.setUsed(jsonObject.getBoolean("used"));
+            iosContentItem.setCreatedAt(androidCache.getCreatedAt());
+            iosContentItem.setDesc(androidCache.getDesc());
+            iosContentItem.set__id(androidCache.getObjectId());
+            iosContentItem.setPublishedAt(androidCache.getPublishedAt());
+            iosContentItem.setType(androidCache.getType());
+            iosContentItem.setWho(androidCache.getWho());
+            iosContentItem.setUrl(androidCache.getUrl());
+            iosContentItem.setUpdatedAt(androidCache.getUpdatedAt());
+            iosContentItem.setUsed(androidCache.getUsed());
             items.add(iosContentItem);
         }
         return items;
     }
 
     public static IOSContentItem parseContentItem2IOSItem(FavoriteContentItem item) {
-        IOSContentItem iosContentItem = new IOSContentItem();
-        iosContentItem.setIsStared(true);
-        iosContentItem.setCreatedAt(item.getCreatedAt());
-        iosContentItem.setDesc(item.getDesc());
-        iosContentItem.setObjectId(item.getObjectId());
-        iosContentItem.setPublishedAt(item.getPublishedAt());
-        iosContentItem.setType(item.getType());
-        iosContentItem.setWho(item.getWho());
-        iosContentItem.setUrl(item.getUrl());
-        iosContentItem.setUpdatedAt(item.getUpdatedAt());
-        iosContentItem.setUsed(item.getUsed());
-        return iosContentItem;
+        IOSContentItem androidContentItem = new IOSContentItem();
+        androidContentItem.setIsStared(true);
+        androidContentItem.setCreatedAt(item.getCreatedAt());
+        androidContentItem.setDesc(item.getDesc());
+        androidContentItem.set__id(item.get__id());
+        androidContentItem.setPublishedAt(item.getPublishedAt());
+        androidContentItem.setType(item.getType());
+        androidContentItem.setWho(item.getWho());
+        androidContentItem.setUrl(item.getUrl());
+        androidContentItem.setUpdatedAt(item.getUpdatedAt());
+        androidContentItem.setUsed(item.getUsed());
+        return androidContentItem;
     }
 
     @Override
@@ -64,14 +64,14 @@ public class IOSContentItem extends ContentItem{
 
         IOSContentItem that = (IOSContentItem) o;
 
-        return objectId.equals(that.objectId) && url.equals(that.getUrl());
+        return _id.equals(that._id) && url.equals(that.getUrl());
 
     }
 
     @Override
     public int hashCode() {
         int result = 1;
-        result = 31 * result + objectId.hashCode();
+        result = 31 * result + _id.hashCode();
         result = 31 * result + url.hashCode();
         return result;
     }

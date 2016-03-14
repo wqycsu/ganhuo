@@ -61,7 +61,18 @@ public class SlideBottomInWithAlphaAnimator extends RecyclerView.ItemAnimator {
 
     @Override
     public boolean animateAppearance(@NonNull RecyclerView.ViewHolder viewHolder, @Nullable ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
-        return false;
+        View target = viewHolder.itemView;
+        AnimatorSet animator = new AnimatorSet();
+
+        animator.playTogether(
+                ObjectAnimator.ofFloat(target, "translationX", -target.getMeasuredWidth(), 0.0f),
+                ObjectAnimator.ofFloat(target, "alpha", target.getAlpha(), 1.0f)
+        );
+
+        animator.setTarget(target);
+        animator.setDuration(100);
+        animator.start();
+        return true;
     }
 
     @Override

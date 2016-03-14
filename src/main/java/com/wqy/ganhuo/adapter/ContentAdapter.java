@@ -30,13 +30,15 @@ public class ContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private LoadDataListener listener;
     private OnItemClickListener onItemClickListener;
 
-    public interface LoadDataListener{
+    public interface LoadDataListener {
         void loadDataFromNet(int page);
+
         void loadDataFromDB(int page);
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(View view, int position);
+
         void onItemLongClick(View view, int position);
     }
 
@@ -44,7 +46,7 @@ public class ContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
 
-    public ContentAdapter(Context context, ArrayList<? extends ContentItem> items){
+    public ContentAdapter(Context context, ArrayList<? extends ContentItem> items) {
         this.items = items;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
@@ -58,14 +60,14 @@ public class ContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
-        if(holder instanceof FooterViewHolder) {
+        if (holder instanceof FooterViewHolder) {
             ((FooterViewHolder) holder).materialCircleProgressBar.stopProgress();
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(position + 1 == getItemCount()) {
+        if (position + 1 == getItemCount()) {
             return VIEW_TYPE_FOOTER;
         } else {
             return VIEW_TYPE_ITEM;
@@ -74,7 +76,7 @@ public class ContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof ItemViewHolder) {
+        if (holder instanceof ItemViewHolder) {
             final int clickPosition = position;
             final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             final ContentItem contentItem = items.get(position);
@@ -92,7 +94,7 @@ public class ContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 @Override
                 public void onClick(View v) {
                     ShowToast.toastLong("收藏按钮点击");
-                    FavoriteCacheUtil.getInstance().addCache(JSON.toJSONString(contentItem), 0);
+                    FavoriteCacheUtil.getInstance().addCache(contentItem);
                     contentItem.setIsStared(!contentItem.isStared());
                     if (contentItem.isStared()) {
                         itemViewHolder.imgStar.setImageResource(R.mipmap.ic_star_red_50);
@@ -124,7 +126,12 @@ public class ContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             } else {
                 itemViewHolder.imgStar.setImageResource(R.drawable.bg_star_button);
             }
-        } else if(holder instanceof FooterViewHolder) {
+        } else if (holder instanceof FooterViewHolder) {
+            if (items.size() <= 0) {
+                holder.itemView.setVisibility(View.GONE);
+            } else {
+                holder.itemView.setVisibility(View.VISIBLE);
+            }
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             footerViewHolder.materialCircleProgressBar.startProgress();
         }
@@ -132,7 +139,7 @@ public class ContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == VIEW_TYPE_ITEM) {
+        if (viewType == VIEW_TYPE_ITEM) {
             View view = inflater.inflate(R.layout.android_content_item, parent, false);
             return new ItemViewHolder(view);
         } else if (viewType == VIEW_TYPE_FOOTER) {
@@ -142,17 +149,26 @@ public class ContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return null;
     }
 
-    public void setLoadDataListener(LoadDataListener loadDataListener){
+    public void setLoadDataListener(LoadDataListener loadDataListener) {
         this.listener = loadDataListener;
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
     }
 
-    public void loadFirst(){
+    public void loadFirst() {
         page = 1;
-        loadDataByNetworkType();
+        if (listener != null) {
+            listener.loadDataFromDB(page);
+        }
+    }
+
+    public void onRefresh() {
+        page = 1;
+        if(listener != null) {
+            listener.loadDataFromNet(page);
+        }
     }
 
     /**
@@ -171,7 +187,7 @@ public class ContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
 
-    public void loadNextPage(){
+    public void loadNextPage() {
         page++;
         loadDataByNetworkType();
     }

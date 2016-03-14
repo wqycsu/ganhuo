@@ -16,9 +16,13 @@ public class NetworkUtil {
      */
     public static boolean isNetConnected(Context context){
         ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if(networkInfo!=null&&networkInfo.isConnected()){
-            return true;
+        NetworkInfo[] info = connectivityManager.getAllNetworkInfo();
+        if (info != null) {
+            for (int i = 0; i < info.length; i++) {
+                if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                    return true;
+                }
+            }
         }
         return false;
     }

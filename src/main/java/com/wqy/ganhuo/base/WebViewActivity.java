@@ -12,6 +12,7 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ import butterknife.ButterKnife;
 
 public abstract class WebViewActivity extends BaseActivity {
 
+    @Bind(R.id.web_base_container_layout)
+    protected LinearLayout baseContainer;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.web_progress)

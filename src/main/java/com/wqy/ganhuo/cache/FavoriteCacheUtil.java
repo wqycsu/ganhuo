@@ -1,11 +1,10 @@
 package com.wqy.ganhuo.cache;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.wqy.ganhuo.base.AppApplication;
 import com.wqy.ganhuo.greendao.Favorite;
 import com.wqy.ganhuo.greendao.FavoriteDao;
 import com.wqy.ganhuo.model.AndroidContentItem;
+import com.wqy.ganhuo.model.ContentItem;
 import com.wqy.ganhuo.model.FavoriteContentItem;
 import com.wqy.ganhuo.model.IOSContentItem;
 import com.wqy.ganhuo.utils.Constants;
@@ -44,24 +43,23 @@ public class FavoriteCacheUtil extends BaseCacheUtil {
     }
 
     /**
-     * @param cache 缓存内容:{@link com.alibaba.fastjson.JSON}格式
+     * @param cache 缓存内容:{@link FavoriteContentItem}格式
      * @param page  not work here
      */
     @Override
-    public void addCache(String cache, int page) {
-        JSONObject json = JSON.parseObject(cache);
+    public void addCache(ContentItem cache, int page) {
         Favorite favoriteCache = new Favorite();
-        favoriteCache.setCreatedAt(json.getString("createdAt"));
-        favoriteCache.setDesc(json.getString("desc"));
-        favoriteCache.setObjectId(json.getString("objectId"));
-        favoriteCache.setPlatformType(json.getString("type").equals("Android") ? Constants.PLATFORM_TYPE_ANDROID : Constants.PLATFORM_TYPE_IOS);
-        favoriteCache.setPublishedAt(json.getString("publishedAt"));
-        favoriteCache.setType(json.getString("type"));
-        favoriteCache.setUpdatedAt(json.getString("updateAt"));
-        favoriteCache.setUrl(json.getString("url"));
-        favoriteCache.setWho(json.getString("who"));
-        favoriteCache.setUsed(json.getBoolean("used"));
-        favoriteDao.insert(favoriteCache);
+        favoriteCache.setCreatedAt(cache.getCreatedAt());
+        favoriteCache.setDesc(cache.getDesc());
+        favoriteCache.setObjectId(cache.get__id());
+        favoriteCache.setPlatformType(cache.getType().equals("Android") ? Constants.PLATFORM_TYPE_ANDROID : Constants.PLATFORM_TYPE_IOS);
+        favoriteCache.setPublishedAt(cache.getPublishedAt());
+        favoriteCache.setType(cache.getType());
+        favoriteCache.setUpdatedAt(cache.getUpdatedAt());
+        favoriteCache.setUrl(cache.getUrl());
+        favoriteCache.setWho(cache.getWho());
+        favoriteCache.setUsed(cache.isUsed());
+        favoriteDao.insertOrReplace(favoriteCache);
     }
 
     @Override

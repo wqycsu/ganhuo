@@ -1,10 +1,10 @@
 package com.wqy.ganhuo.model;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.wqy.ganhuo.greendao.AndroidCache;
 import com.wqy.ganhuo.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by weiquanyun on 15/8/17.
@@ -19,24 +19,24 @@ public class AndroidContentItem extends ContentItem {
         return Constants.ANDROID_REQUEST_URL + count + "/" + page;
     }
 
-    public static ArrayList<AndroidContentItem> parseCache(JSONArray jsonArray) {
-        if (jsonArray == null) {
+    public static ArrayList<AndroidContentItem> parseCache(List<AndroidCache> androidCacheList) {
+        if (androidCacheList == null) {
             return null;
         }
-        ArrayList<AndroidContentItem> items = new ArrayList<AndroidContentItem>(jsonArray.size());
-        for (int i = 0; i < jsonArray.size(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
+        ArrayList<AndroidContentItem> items = new ArrayList<AndroidContentItem>(androidCacheList.size());
+        AndroidCache androidCache;
+        for (int i = 0; i < androidCacheList.size(); i++) {
+            androidCache = androidCacheList.get(i);
             AndroidContentItem androidContentItem = new AndroidContentItem();
-            androidContentItem.setIsStared(jsonObject.getBoolean("isStared"));
-            androidContentItem.setCreatedAt(jsonObject.getString("createdAt"));
-            androidContentItem.setDesc(jsonObject.getString("desc"));
-            androidContentItem.setObjectId(jsonObject.getString("objectId"));
-            androidContentItem.setPublishedAt(jsonObject.getString("publishedAt"));
-            androidContentItem.setType(jsonObject.getString("type"));
-            androidContentItem.setWho(jsonObject.getString("who"));
-            androidContentItem.setUrl(jsonObject.getString("url"));
-            androidContentItem.setUpdatedAt(jsonObject.getString("updatedAt"));
-            androidContentItem.setUsed(jsonObject.getBoolean("used"));
+            androidContentItem.setCreatedAt(androidCache.getCreatedAt());
+            androidContentItem.setDesc(androidCache.getDesc());
+            androidContentItem.set__id(androidCache.getObjectId());
+            androidContentItem.setPublishedAt(androidCache.getPublishedAt());
+            androidContentItem.setType(androidCache.getType());
+            androidContentItem.setWho(androidCache.getWho());
+            androidContentItem.setUrl(androidCache.getUrl());
+            androidContentItem.setUpdatedAt(androidCache.getUpdatedAt());
+            androidContentItem.setUsed(androidCache.getUsed());
             items.add(androidContentItem);
         }
         return items;
@@ -47,7 +47,7 @@ public class AndroidContentItem extends ContentItem {
         androidContentItem.setIsStared(true);
         androidContentItem.setCreatedAt(item.getCreatedAt());
         androidContentItem.setDesc(item.getDesc());
-        androidContentItem.setObjectId(item.getObjectId());
+        androidContentItem.set__id(item.get__id());
         androidContentItem.setPublishedAt(item.getPublishedAt());
         androidContentItem.setType(item.getType());
         androidContentItem.setWho(item.getWho());
@@ -64,14 +64,14 @@ public class AndroidContentItem extends ContentItem {
 
         AndroidContentItem that = (AndroidContentItem) o;
 
-        return objectId.equals(that.objectId) && url.equals(that.getUrl());
+        return _id.equals(that._id) && url.equals(that.getUrl());
 
     }
 
     @Override
     public int hashCode() {
         int result = 1;
-        result = 31 * result + objectId.hashCode();
+        result = 31 * result + _id.hashCode();
         result = 31 * result + url.hashCode();
         return result;
     }

@@ -23,6 +23,7 @@ import com.wqy.ganhuo.base.BaseFragment;
 import com.wqy.ganhuo.cache.AndroidCacheUtil;
 import com.wqy.ganhuo.interfaces.LoadFinishCallback;
 import com.wqy.ganhuo.model.AndroidContentItem;
+import com.wqy.ganhuo.model.IOSContentItem;
 import com.wqy.ganhuo.network.RequestForAndroid;
 import com.wqy.ganhuo.ui.AndroidContentDetailActivity;
 import com.wqy.ganhuo.ui.MainDrawerActivity;
@@ -33,6 +34,8 @@ import com.wqy.ganhuo.utils.ShowToast;
 import com.wqy.ganhuo.view.AutoLoadRecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -91,7 +94,7 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
             @Override
             public void onRefresh() {
                 if (adapter != null)
-                    adapter.loadFirst();
+                    adapter.onRefresh();
             }
         });
         recyclerView.setLoadMoreListener(new AutoLoadRecyclerView.LoadMoreListener() {
@@ -123,12 +126,12 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
         executeRequest(new RequestForAndroid(AndroidContentItem.getRequestUrl(page), new Response.Listener<ArrayList<AndroidContentItem>>() {
             @Override
             public void onResponse(ArrayList<AndroidContentItem> response) {
-                items.addAll(response);
+                addAndRemoveRepeatedData(response);
                 contentLoadingProgressBar.hide();
                 mLoadFinishCallback.onLoadFinish();
                 swipeRefreshLayout.setRefreshing(false);
                 adapter.notifyDataSetChanged();
-                AndroidCacheUtil.getInstance().addCache(JSONParserUtil.contentItemsToJsonString(response), page);
+                AndroidCacheUtil.getInstance().addCache(response, page);
             }
         }, new Response.ErrorListener() {
 
@@ -143,8 +146,11 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
 
     @Override
     public void loadDataFromDB(int page) {
-        ArrayList cacheData = AndroidCacheUtil.getInstance().getCacheByPage(page);
-        items.addAll(cacheData);
+        ArrayList<AndroidContentItem> cacheData = AndroidCacheUtil.getInstance().getCacheByPage(page);
+        if(cacheData != null) {
+            items.addAll(cacheData);
+        }
+        loadDataFromNet(page);
     }
 
     @Override
@@ -171,5 +177,13 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
             swipeRefreshLayout.setRefreshing(true);
             adapter.loadFirst();
         }
+    }
+
+    private void addAndRemoveRepeatedData(ArrayList<AndroidContentItem> response) {
+        HashSet<AndroidContentItem> set = new HashSet<AndroidContentItem>(items);
+        set.addAll(response);
+        items.clear();
+        items.addAll(set);
+        Collections.sort(items);
     }
 }

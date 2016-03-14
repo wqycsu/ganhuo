@@ -1,12 +1,11 @@
 package com.wqy.ganhuo.cache;
 
-import android.text.TextUtils;
-
-import com.alibaba.fastjson.JSON;
 import com.wqy.ganhuo.base.AppApplication;
 import com.wqy.ganhuo.greendao.AndroidCache;
 import com.wqy.ganhuo.greendao.AndroidCacheDao;
 import com.wqy.ganhuo.model.AndroidContentItem;
+import com.wqy.ganhuo.model.ContentItem;
+import com.wqy.ganhuo.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +19,6 @@ public class AndroidCacheUtil extends BaseCacheUtil {
 
     private static volatile AndroidCacheUtil instance;
     private static AndroidCacheDao androidCacheDao;
-
-    private List<AndroidCache> androidCacheList;
-    private boolean isFirstQueryPageNum = true;
-    private static int mLatestPageNumInDB = 0;
 
     private AndroidCacheUtil() {
 
@@ -43,16 +38,21 @@ public class AndroidCacheUtil extends BaseCacheUtil {
     }
 
     @Override
-    public void addCache(String cache, int page) {
-        if(isFirstQueryPageNum) {
-            mLatestPageNumInDB = getLatestPageInDB();
-            isFirstQueryPageNum = false;
+    public void addCache(ContentItem cache, int page) {
+        AndroidCache androidCache = cache.contentImToAndroidCache(page);
+        if (androidCache != null) {
+            androidCacheDao.insertOrReplace(androidCache);
         }
-        AndroidCache androidCache = new AndroidCache();
-        androidCache.setResult(cache);
-        androidCache.setPage(String.valueOf(page + mLatestPageNumInDB));
-        if (androidCacheList == null || !androidCacheList.contains(androidCache)) {
-            androidCacheDao.insert(androidCache);
+    }
+
+    @Override
+    public void addCache(List<? extends ContentItem> cache, int page) {
+        ArrayList<AndroidCache> androidCaches = new ArrayList<>();
+        for(ContentItem contentItem : cache) {
+            androidCaches.add(contentItem.contentImToAndroidCache(page));
+        }
+        if(androidCaches.size() > 0) {
+            androidCacheDao.insertOrReplaceInTx(androidCaches);
         }
     }
 
@@ -62,23 +62,14 @@ public class AndroidCacheUtil extends BaseCacheUtil {
     }
 
     @Override
-    public ArrayList getCacheByPage(int page) {
-        QueryBuilder<AndroidCache> queryBuilder = androidCacheDao.queryBuilder().where(AndroidCacheDao.Properties.Page.eq(String.valueOf(page)));
+    public ArrayList<AndroidContentItem> getCacheByPage(int page) {
+        QueryBuilder<AndroidCache> queryBuilder = androidCacheDao.queryBuilder()
+                .offset(Constants.ONE_PAGE_SIZE * (page - 1))
+                .limit(Constants.ONE_PAGE_SIZE)
+                .orderDesc(AndroidCacheDao.Properties.PublishedAt);
         if (queryBuilder != null && queryBuilder.list().size() > 0) {
-            return AndroidContentItem.parseCache(JSON.parseArray(queryBuilder.list().get(0).getResult()));
+            return AndroidContentItem.parseCache(queryBuilder.list());
         }
         return null;
-    }
-
-    private int getLatestPageInDB() {
-        QueryBuilder<AndroidCache> queryBuilder = androidCacheDao.queryBuilder();
-        if (queryBuilder != null && queryBuilder.list().size() > 0) {
-            androidCacheList = queryBuilder.list();
-            String page = androidCacheList.get(androidCacheList.size() - 1).getPage();
-            if (TextUtils.isDigitsOnly(page)) {
-                return Integer.parseInt(page);
-            }
-        }
-        return 0;
     }
 }

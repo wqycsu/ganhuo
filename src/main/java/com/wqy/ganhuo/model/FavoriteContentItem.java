@@ -37,11 +37,11 @@ public class FavoriteContentItem extends ContentItem{
         this.used = used;
     }
 
-    public String getObjectId() {
+    public String get__id() {
         return objectId;
     }
 
-    public void setObjectId(String objectId) {
+    public void set__id(String objectId) {
         this.objectId = objectId;
     }
 
@@ -130,7 +130,7 @@ public class FavoriteContentItem extends ContentItem{
             contentItem.setUpdatedAt(cache.getUpdatedAt());
             contentItem.setCreatedAt(cache.getCreatedAt());
             contentItem.setDesc(cache.getDesc());
-            contentItem.setObjectId(cache.getObjectId());
+            contentItem.set__id(cache.getObjectId());
             contentItem.setPlatformType(cache.getPlatformType());
             contentItem.setType(cache.getType());
             contentItem.setPublishedAt(cache.getPublishedAt());

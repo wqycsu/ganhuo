@@ -23,6 +23,7 @@ import com.wqy.ganhuo.adapter.IOSContentAdapter;
 import com.wqy.ganhuo.base.BaseFragment;
 import com.wqy.ganhuo.cache.IOSCacheUtil;
 import com.wqy.ganhuo.interfaces.LoadFinishCallback;
+import com.wqy.ganhuo.model.AndroidContentItem;
 import com.wqy.ganhuo.model.IOSContentItem;
 import com.wqy.ganhuo.network.RequestForIOS;
 import com.wqy.ganhuo.ui.AndroidContentDetailActivity;
@@ -33,6 +34,8 @@ import com.wqy.ganhuo.utils.ShowToast;
 import com.wqy.ganhuo.view.AutoLoadRecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import butterknife.Bind;
@@ -106,7 +109,7 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
             @Override
             public void onRefresh() {
                 if(adapter!=null)
-                    adapter.loadFirst();
+                    adapter.onRefresh();
             }
         });
         return view;
@@ -131,13 +134,13 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
                 new Response.Listener<ArrayList<IOSContentItem>>() {
                     @Override
                     public void onResponse(ArrayList<IOSContentItem> response) {
-                        items.addAll(response);
+                        addAndRemoveRepeatedData(response);
                         mProgressBar.hide();
                         adapter.notifyDataSetChanged();
                         mSwipRefreshLayout.setRefreshing(false);
                         //load more
                         mLoadFinishCallback.onLoadFinish();
-                        IOSCacheUtil.getInstance().addCache(JSONParserUtil.contentItemsToJsonString(response), page);
+                        IOSCacheUtil.getInstance().addCache(response, page);
                     }
                 },
                 new Response.ErrorListener(){
@@ -155,7 +158,11 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
 
     @Override
     public void loadDataFromDB(int page) {
-        items.addAll(IOSCacheUtil.getInstance().getCacheByPage(page));
+        ArrayList<IOSContentItem> cache = IOSCacheUtil.getInstance().getCacheByPage(page);
+        if(cache != null) {
+            items.addAll(cache);
+        }
+        loadDataFromNet(page);
     }
 
     @Override
@@ -184,5 +191,13 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
             mSwipRefreshLayout.setRefreshing(true);
             adapter.loadFirst();
         }
+    }
+
+    private void addAndRemoveRepeatedData(ArrayList<IOSContentItem> response) {
+        HashSet<IOSContentItem> set = new HashSet<IOSContentItem>(items);
+        set.addAll(response);
+        items.clear();
+        items.addAll(set);
+        Collections.sort(items);
     }
 }

@@ -2,6 +2,7 @@ package com.wqy.ganhuo.ui;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.BinderThread;
 import android.support.design.widget.AppBarLayout;
@@ -73,6 +74,9 @@ public class MainDrawerActivity extends BaseActivity
 
         setSupportActionBar(toolbar);
         toolbar.setTitle(getString(R.string.app_name));
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            appBarLayout.setPadding(0, getStatusBarHeight(), 0, 0);
+        }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
