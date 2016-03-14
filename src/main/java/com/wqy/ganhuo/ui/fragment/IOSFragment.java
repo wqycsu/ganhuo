@@ -5,11 +5,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,7 @@ import com.wqy.ganhuo.ui.MainDrawerActivity;
 import com.wqy.ganhuo.ui.views.MaterialCircleProgressBar;
 import com.wqy.ganhuo.utils.JSONParserUtil;
 import com.wqy.ganhuo.utils.ShowToast;
+import com.wqy.ganhuo.utils.SnackBarUtil;
 import com.wqy.ganhuo.view.AutoLoadRecyclerView;
 
 import java.util.ArrayList;
@@ -48,6 +51,8 @@ import butterknife.ButterKnife;
  */
 public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadDataListener, IOSContentAdapter.OnItemClickListener{
 
+    private static final String TAG = "IOSFragment";
+
     @Bind(R.id.ios_swipe_refresh_layout)
     SwipeRefreshLayout mSwipRefreshLayout;
     @Bind(R.id.ios_recycler_view)
@@ -55,6 +60,7 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
     @Bind(R.id.progressbar)
     MaterialCircleProgressBar mProgressBar;
 
+    private CoordinatorLayout mainContent;
     private ArrayList<IOSContentItem> items = new ArrayList<>();
     private IOSContentAdapter adapter;
     private LoadFinishCallback mLoadFinishCallback;
@@ -76,6 +82,7 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
         }
         if(activity instanceof MainDrawerActivity) {
             ((MainDrawerActivity) activity).setOnRefreshListener(this);
+            mainContent = ((MainDrawerActivity) activity).getMainContent();
         }
     }
 
@@ -147,7 +154,11 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         mProgressBar.setVisibility(View.GONE);
-                        ShowToast.toastLong(error.getMessage());
+                        if(mSwipRefreshLayout.isRefreshing()) {
+                            mSwipRefreshLayout.setRefreshing(false);
+                        }
+                        SnackBarUtil.makeLong(mainContent, "加载出错了!").show();
+                        Log.d(TAG, "onErrorResponse: " + error.getMessage());
                         //load more
                         mLoadFinishCallback.onLoadFinish();
                     }

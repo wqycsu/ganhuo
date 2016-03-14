@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.BinderThread;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -42,6 +43,8 @@ import butterknife.ButterKnife;
 public class MainDrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    @Bind(R.id.main_content)
+    CoordinatorLayout mainContent;
     @Bind(R.id.app_bar)
     AppBarLayout appBarLayout;
     @Bind(R.id.tabs)
@@ -206,5 +209,9 @@ public class MainDrawerActivity extends BaseActivity
 
     public void setOnRefreshListener(OnRefreshListener onRefreshListener) {
         this.onRefreshListener = onRefreshListener;
+    }
+
+    public CoordinatorLayout getMainContent() {
+        return this.mainContent;
     }
 }

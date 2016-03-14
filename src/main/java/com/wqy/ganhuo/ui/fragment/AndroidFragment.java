@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +32,7 @@ import com.wqy.ganhuo.ui.views.MaterialCircleProgressBar;
 import com.wqy.ganhuo.utils.Constants;
 import com.wqy.ganhuo.utils.JSONParserUtil;
 import com.wqy.ganhuo.utils.ShowToast;
+import com.wqy.ganhuo.utils.SnackBarUtil;
 import com.wqy.ganhuo.view.AutoLoadRecyclerView;
 
 import java.util.ArrayList;
@@ -45,6 +47,8 @@ import butterknife.ButterKnife;
  */
 public class AndroidFragment extends BaseFragment implements AndroidContentAdapter.LoadDataListener, AndroidContentAdapter.OnItemClickListener, MainDrawerActivity.OnRefreshListener {
 
+    private static final String TAG = "AndroidFragment";
+
     @Bind(R.id.android_recycler_view)
     AutoLoadRecyclerView recyclerView;
     @Bind(R.id.android_swipe_refresh_layout)
@@ -52,6 +56,7 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
     @Bind(R.id.progressbar)
     MaterialCircleProgressBar contentLoadingProgressBar;
 
+    private CoordinatorLayout mainContent;
     private ImageLoader imageLoader;
     private ArrayList<AndroidContentItem> items = new ArrayList<>();
     private AndroidContentAdapter adapter;
@@ -73,6 +78,7 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
         }
         if(activity instanceof MainDrawerActivity) {
             ((MainDrawerActivity) activity).setOnRefreshListener(this);
+            mainContent = ((MainDrawerActivity) activity).getMainContent();
         }
     }
 
@@ -138,7 +144,11 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
             @Override
             public void onErrorResponse(VolleyError error) {
                 contentLoadingProgressBar.hide();
-                ShowToast.toastLong("加载出错了:" + error.getMessage());
+                if(swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+                SnackBarUtil.makeLong(mainContent, "加载出错了!").show();
+                Log.d(TAG, "onErrorResponse: " + error.getMessage());
                 mLoadFinishCallback.onLoadFinish();
             }
         }));
