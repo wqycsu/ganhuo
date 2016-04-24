@@ -48,8 +48,8 @@ public class AppApplication extends Application {
 
     public static DaoMaster getDaoMaster() {
         if (daoMaster == null) {
-            DaoMaster.OpenHelper helper = new DaoMaster.DevOpenHelper(context, Constants.DB_NAME, null);
-            daoMaster = new DaoMaster(helper.getWritableDatabase());
+            DaoMaster.EncryptedDevOpenHelper helper = new DaoMaster.EncryptedDevOpenHelper(context, Constants.DB_NAME);
+            daoMaster = new DaoMaster(helper.getWritableDatabase("123456"));
         }
         return daoMaster;
     }
