@@ -39,9 +39,11 @@ public class AndroidCacheUtil extends BaseCacheUtil {
 
     @Override
     public void addCache(ContentItem cache, int page) {
-        AndroidCache androidCache = cache.contentImToAndroidCache(page);
-        if (androidCache != null) {
-            androidCacheDao.insertOrReplace(androidCache);
+        if(cache instanceof AndroidContentItem) {
+            AndroidCache androidCache = ((AndroidContentItem) cache).contentImToAndroidCache(page);
+            if (androidCache != null) {
+                androidCacheDao.insertOrReplace(androidCache);
+            }
         }
     }
 
@@ -49,7 +51,9 @@ public class AndroidCacheUtil extends BaseCacheUtil {
     public void addCache(List<? extends ContentItem> cache, int page) {
         ArrayList<AndroidCache> androidCaches = new ArrayList<>();
         for(ContentItem contentItem : cache) {
-            androidCaches.add(contentItem.contentImToAndroidCache(page));
+            if(contentItem instanceof AndroidContentItem) {
+                androidCaches.add(((AndroidContentItem) contentItem).contentImToAndroidCache(page));
+            }
         }
         if(androidCaches.size() > 0) {
             androidCacheDao.insertOrReplaceInTx(androidCaches);
@@ -62,7 +66,7 @@ public class AndroidCacheUtil extends BaseCacheUtil {
     }
 
     @Override
-    public ArrayList<AndroidContentItem> getCacheByPage(int page) {
+    public List<AndroidContentItem> getCacheByPage(int page) {
         QueryBuilder<AndroidCache> queryBuilder = androidCacheDao.queryBuilder()
                 .offset(Constants.ONE_PAGE_SIZE * (page - 1))
                 .limit(Constants.ONE_PAGE_SIZE)

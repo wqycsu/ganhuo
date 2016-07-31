@@ -8,7 +8,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.wqy.ganhuo.network.RequestManager;
-import com.wqy.ganhuo.ui.MainActivity;
 import com.wqy.ganhuo.ui.MainDrawerActivity;
 import com.wqy.ganhuo.utils.ShowToast;
 
@@ -24,9 +23,7 @@ public abstract class BaseFragment extends Fragment implements MainDrawerActivit
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.mActivity = activity;
-        if (activity instanceof MainActivity) {
-            toolbar = ((MainActivity) activity).getToolbar();
-        } else if (activity instanceof MainDrawerActivity) {
+        if (activity instanceof MainDrawerActivity) {
             toolbar = ((MainDrawerActivity) activity).getToolbar();
         } else {
             toolbar = null;
@@ -47,8 +44,8 @@ public abstract class BaseFragment extends Fragment implements MainDrawerActivit
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        super.onPause();
         RequestManager.canAllByTag(this);
     }
 

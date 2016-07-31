@@ -32,6 +32,7 @@ import com.wqy.ganhuo.base.BaseFragment;
 import com.wqy.ganhuo.model.FragmentPageItem;
 import com.wqy.ganhuo.ui.fragment.AndroidFragment;
 import com.wqy.ganhuo.ui.fragment.IOSFragment;
+import com.wqy.ganhuo.ui.fragment.MeiziFragment;
 import com.wqy.ganhuo.utils.ShowToast;
 
 import java.util.ArrayList;
@@ -72,10 +73,7 @@ public class MainDrawerActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_drawer);
         ButterKnife.bind(this);
-
-        setSupportActionBar(toolbar);
         toolbar.setTitle(getString(R.string.app_name));
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             appBarLayout.setPadding(0, getStatusBarHeight(), 0, 0);
@@ -129,6 +127,9 @@ public class MainDrawerActivity extends BaseActivity
         );
         fragmentPageItemList.add(
                 new FragmentPageItem("IOS", 0, 0, IOSFragment.class, null)
+        );
+        fragmentPageItemList.add(
+                new FragmentPageItem("妹子", 0, 0, MeiziFragment.class, null)
         );
         adapter = new FragmentPageAdapter(getSupportFragmentManager(), fragmentPageItemList);
         viewPager.setAdapter(adapter);
@@ -213,5 +214,19 @@ public class MainDrawerActivity extends BaseActivity
 
     public CoordinatorLayout getMainContent() {
         return this.mainContent;
+    }
+
+    public FloatingActionButton getFab() {
+        return fab;
+    }
+
+    @Override
+    public int provideContentLayout() {
+        return R.layout.activity_main_drawer;
+    }
+
+    @Override
+    public boolean canGoBack() {
+        return false;
     }
 }

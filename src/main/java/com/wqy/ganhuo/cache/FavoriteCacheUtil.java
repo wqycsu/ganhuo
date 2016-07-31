@@ -10,6 +10,7 @@ import com.wqy.ganhuo.model.IOSContentItem;
 import com.wqy.ganhuo.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.greenrobot.dao.query.QueryBuilder;
 
@@ -73,7 +74,7 @@ public class FavoriteCacheUtil extends BaseCacheUtil {
      * @return 收藏项缓存数据
      */
     @Override
-    public ArrayList getCacheByPage(int page) {
+    public List getCacheByPage(int page) {
         QueryBuilder<Favorite> queryBuilder = favoriteDao.queryBuilder();
         if(queryBuilder != null) {
             favoriteContentItems = FavoriteContentItem.parseCache(queryBuilder.list());

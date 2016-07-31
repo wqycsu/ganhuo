@@ -29,7 +29,7 @@ public class MaterialCircleProgressBar extends ImageView {
     // Default background for the progress spinner
     private static final int CIRCLE_BG_LIGHT = 0xFFFAFAFA;
     private static final int CIRCLE_DIAMETER = 40;
-    private static final int LARGE_CIRCLE_DIAMETER = 66;
+    private static final int LARGE_CIRCLE_DIAMETER = 80;
     // PX
     private static final float X_OFFSET = 0f;
     private static final float Y_OFFSET = 1.75f;

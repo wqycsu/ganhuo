@@ -57,6 +57,22 @@ public class IOSContentItem extends ContentItem{
         return androidContentItem;
     }
 
+    public IOSCache contentImToIOSCache(int page) {
+        IOSCache cache = new IOSCache();
+        cache.setCreatedAt(createdAt);
+        cache.setDesc(desc);
+        cache.setObjectId(_id);
+        cache.setPage(page);
+        cache.setPublishedAt(publishedAt);
+        cache.setUpdatedAt(updatedAt);
+        cache.setType(type);
+        cache.setPlatformType(Constants.PLATFORM_TYPE_IOS);
+        cache.setUrl(url);
+        cache.setUsed(used);
+        cache.setWho(who);
+        return cache;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

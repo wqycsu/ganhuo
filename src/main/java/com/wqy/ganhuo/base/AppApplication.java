@@ -3,9 +3,6 @@ package com.wqy.ganhuo.base;
 import android.app.Application;
 import android.content.Context;
 
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.wqy.ganhuo.cache.FavoriteCacheUtil;
 import com.wqy.ganhuo.greendao.DaoMaster;
 import com.wqy.ganhuo.greendao.DaoSession;
@@ -16,34 +13,19 @@ import com.wqy.ganhuo.utils.Constants;
  */
 public class AppApplication extends Application {
 
-    public static final int MEMORY_CACHE_SIZE = 4 * 1024 * 1024;//4Mb
     private static Context context;
-    ImageLoader mImageLoader;
-    ImageLoaderConfiguration configuration;
     private static DaoMaster daoMaster;
     private static DaoSession daoSession;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        initImageLoader();
         context = this;
         loadFavoriteCache();
     }
 
     public static Context getAppContext() {
         return context.getApplicationContext();
-    }
-
-    /**
-     * 初始化Universal Image Loader
-     */
-    private void initImageLoader() {
-        configuration = new ImageLoaderConfiguration.Builder(this)
-                .memoryCache(new LruMemoryCache(MEMORY_CACHE_SIZE))
-                .build();
-        mImageLoader = ImageLoader.getInstance();
-        mImageLoader.init(configuration);
     }
 
     public static DaoMaster getDaoMaster() {

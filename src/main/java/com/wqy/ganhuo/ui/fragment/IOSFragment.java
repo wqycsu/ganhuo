@@ -128,7 +128,7 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
         adapter = new IOSContentAdapter(getActivity(), items);
         mRecyclerView.setAdapter(adapter);
         mLoadFinishCallback = mRecyclerView;
-        mRecyclerView.setOnPauseListenerParams(null,true,true);
+        mRecyclerView.setOnPauseListenerParams(true,true);
 
         adapter.setOnItemClickListener(this);
         adapter.setLoadDataListener(this);
@@ -169,7 +169,7 @@ public class IOSFragment extends BaseFragment implements IOSContentAdapter.LoadD
 
     @Override
     public void loadDataFromDB(int page) {
-        ArrayList<IOSContentItem> cache = IOSCacheUtil.getInstance().getCacheByPage(page);
+        List<IOSContentItem> cache = IOSCacheUtil.getInstance().getCacheByPage(page);
         if(cache != null) {
             items.addAll(cache);
         }

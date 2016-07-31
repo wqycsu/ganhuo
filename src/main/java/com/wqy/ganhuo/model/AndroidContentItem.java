@@ -19,7 +19,7 @@ public class AndroidContentItem extends ContentItem {
         return Constants.ANDROID_REQUEST_URL + count + "/" + page;
     }
 
-    public static ArrayList<AndroidContentItem> parseCache(List<AndroidCache> androidCacheList) {
+    public static List<AndroidContentItem> parseCache(List<AndroidCache> androidCacheList) {
         if (androidCacheList == null) {
             return null;
         }
@@ -55,6 +55,22 @@ public class AndroidContentItem extends ContentItem {
         androidContentItem.setUpdatedAt(item.getUpdatedAt());
         androidContentItem.setUsed(item.getUsed());
         return androidContentItem;
+    }
+
+    public AndroidCache contentImToAndroidCache(int page) {
+        AndroidCache cache = new AndroidCache();
+        cache.setCreatedAt(createdAt);
+        cache.setDesc(desc);
+        cache.setObjectId(_id);
+        cache.setPage(page);
+        cache.setPublishedAt(publishedAt);
+        cache.setUpdatedAt(updatedAt);
+        cache.setType(type);
+        cache.setPlatformType(Constants.PLATFORM_TYPE_ANDROID);
+        cache.setUrl(url);
+        cache.setUsed(used);
+        cache.setWho(who);
+        return cache;
     }
 
     @Override

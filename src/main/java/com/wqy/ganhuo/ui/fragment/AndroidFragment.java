@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.wqy.ganhuo.R;
 import com.wqy.ganhuo.adapter.AndroidContentAdapter;
 import com.wqy.ganhuo.animators.SlideBottomInWithAlphaAnimator;
@@ -24,20 +22,18 @@ import com.wqy.ganhuo.base.BaseFragment;
 import com.wqy.ganhuo.cache.AndroidCacheUtil;
 import com.wqy.ganhuo.interfaces.LoadFinishCallback;
 import com.wqy.ganhuo.model.AndroidContentItem;
-import com.wqy.ganhuo.model.IOSContentItem;
 import com.wqy.ganhuo.network.RequestForAndroid;
 import com.wqy.ganhuo.ui.AndroidContentDetailActivity;
 import com.wqy.ganhuo.ui.MainDrawerActivity;
 import com.wqy.ganhuo.ui.views.MaterialCircleProgressBar;
 import com.wqy.ganhuo.utils.Constants;
-import com.wqy.ganhuo.utils.JSONParserUtil;
-import com.wqy.ganhuo.utils.ShowToast;
 import com.wqy.ganhuo.utils.SnackBarUtil;
 import com.wqy.ganhuo.view.AutoLoadRecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,7 +53,6 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
     MaterialCircleProgressBar contentLoadingProgressBar;
 
     private CoordinatorLayout mainContent;
-    private ImageLoader imageLoader;
     private ArrayList<AndroidContentItem> items = new ArrayList<>();
     private AndroidContentAdapter adapter;
     private LoadFinishCallback mLoadFinishCallback;
@@ -119,8 +114,7 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
         super.onActivityCreated(savedInstanceState);
         adapter = new AndroidContentAdapter(getActivity(), items);
         recyclerView.setAdapter(adapter);
-        imageLoader = ImageLoader.getInstance();
-        recyclerView.setOnPauseListenerParams(imageLoader, true, true);
+        recyclerView.setOnPauseListenerParams(true, true);
         mLoadFinishCallback = recyclerView;
         adapter.setLoadDataListener(this);
         adapter.setOnItemClickListener(this);
@@ -156,7 +150,7 @@ public class AndroidFragment extends BaseFragment implements AndroidContentAdapt
 
     @Override
     public void loadDataFromDB(int page) {
-        ArrayList<AndroidContentItem> cacheData = AndroidCacheUtil.getInstance().getCacheByPage(page);
+        List<AndroidContentItem> cacheData = AndroidCacheUtil.getInstance().getCacheByPage(page);
         if(cacheData != null) {
             items.addAll(cacheData);
         }

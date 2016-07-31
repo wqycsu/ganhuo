@@ -39,9 +39,11 @@ public class IOSCacheUtil extends BaseCacheUtil {
 
     @Override
     public void addCache(ContentItem cache, int page) {
-        IOSCache androidCache = cache.contentImToIOSCache(page);
-        if (androidCache != null) {
-            iosCacheDao.insertOrReplace(androidCache);
+        if(cache instanceof IOSContentItem) {
+            IOSCache androidCache = ((IOSContentItem) cache).contentImToIOSCache(page);
+            if (androidCache != null) {
+                iosCacheDao.insertOrReplace(androidCache);
+            }
         }
     }
 
@@ -49,7 +51,9 @@ public class IOSCacheUtil extends BaseCacheUtil {
     public void addCache(List<? extends ContentItem> cache, int page) {
         ArrayList<IOSCache> androidCaches = new ArrayList<>();
         for(ContentItem contentItem : cache) {
-            androidCaches.add(contentItem.contentImToIOSCache(page));
+            if(contentItem instanceof IOSContentItem) {
+                androidCaches.add(((IOSContentItem) contentItem).contentImToIOSCache(page));
+            }
         }
         if(androidCaches.size() > 0) {
             iosCacheDao.insertOrReplaceInTx(androidCaches);
@@ -62,7 +66,7 @@ public class IOSCacheUtil extends BaseCacheUtil {
     }
 
     @Override
-    public ArrayList<IOSContentItem> getCacheByPage(int page) {
+    public List<IOSContentItem> getCacheByPage(int page) {
         QueryBuilder<IOSCache> queryBuilder = iosCacheDao.queryBuilder()
                 .offset(Constants.ONE_PAGE_SIZE * (page - 1))
                 .limit(Constants.ONE_PAGE_SIZE)

@@ -176,4 +176,14 @@ public abstract class WebViewActivity extends BaseActivity {
             progressBar.setProgress(newProgress);
         }
     }
+
+    @Override
+    public int provideContentLayout() {
+        return R.layout.activity_webview;
+    }
+
+    @Override
+    public boolean canGoBack() {
+        return true;
+    }
 }

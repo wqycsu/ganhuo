@@ -6,7 +6,7 @@ android {
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.wqy.ganhuo"
-        minSdkVersion 12
+        minSdkVersion 15
         targetSdkVersion 15
         versionCode 1
         versionName "1.0"
@@ -26,7 +26,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile files('libs/universal-image-loader-1.9.4.jar')
     compile 'org.greenrobot:greendao-encryption:2.2.0'
     compile 'net.zetetic:android-database-sqlcipher:3.4.0'
     compile 'com.android.support:appcompat-v7:23.1.1'
@@ -40,4 +39,14 @@ dependencies {
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.okhttp:okhttp:2.7.5'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.7.5'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.google.code.gson:gson:2.4'
+    compile ('com.squareup.retrofit2:retrofit:2.1.0') {
+        exclude module: 'okhttp'
+    }
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'io.reactivex:rxjava:1.1.3'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.github.chrisbanes.photoview:library:1.2.3'
 }

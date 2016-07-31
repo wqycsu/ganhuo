@@ -44,5 +44,5 @@ public interface ICacheUtil {
      * @param page
      * @return
      */
-    ArrayList<? extends ContentItem> getCacheByPage(int page);
+    List<? extends ContentItem> getCacheByPage(int page);
 }

@@ -4,11 +4,9 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.bumptech.glide.Glide;
 import com.wqy.ganhuo.interfaces.LoadFinishCallback;
-import com.wqy.ganhuo.utils.Constants;
 
 /**
  * Created by weiquanyun on 15/8/17.
@@ -17,6 +15,7 @@ public class AutoLoadRecyclerView extends RecyclerView implements LoadFinishCall
 
     private boolean isLoadingMore;
     private LoadMoreListener loadMoreListener;
+    private Context context;
 
     public interface LoadMoreListener {
         void onLoadMore();
@@ -33,26 +32,24 @@ public class AutoLoadRecyclerView extends RecyclerView implements LoadFinishCall
     public AutoLoadRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         isLoadingMore = false;
-        //ImageLoader为空表示不加载图片
-        addOnScrollListener(new AutoLoadScrollListener(null, true, true));
+        this.context = context;
+        addOnScrollListener(new AutoLoadScrollListener(true, true));
     }
 
     public void setLoadMoreListener(LoadMoreListener listener) {
         this.loadMoreListener = listener;
     }
 
-    public void setOnPauseListenerParams(ImageLoader imageLoader, boolean pauseOnScroll, boolean pauseOnFling) {
-        addOnScrollListener(new AutoLoadScrollListener(imageLoader, pauseOnScroll, pauseOnFling));
+    public void setOnPauseListenerParams(boolean pauseOnScroll, boolean pauseOnFling) {
+        addOnScrollListener(new AutoLoadScrollListener(pauseOnScroll, pauseOnFling));
     }
 
     class AutoLoadScrollListener extends OnScrollListener {
 
-        private ImageLoader imageLoader;
         private boolean pauseOnScroll;
         private boolean pauseOnFling;
 
-        public AutoLoadScrollListener(ImageLoader imageLoader, boolean pauseOnScroll, boolean pauseOnFling) {
-            this.imageLoader = imageLoader;
+        public AutoLoadScrollListener(boolean pauseOnScroll, boolean pauseOnFling) {
             this.pauseOnScroll = pauseOnScroll;
             this.pauseOnFling = pauseOnFling;
         }
@@ -60,26 +57,25 @@ public class AutoLoadRecyclerView extends RecyclerView implements LoadFinishCall
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if (imageLoader != null)
-                switch (newState) {
-                    case SCROLL_STATE_DRAGGING:
-                        if (pauseOnScroll) {
-                            imageLoader.pause();
-                        } else {
-                            imageLoader.resume();
-                        }
-                        break;
-                    case SCROLL_STATE_IDLE:
-                        imageLoader.resume();
-                        break;
-                    case SCROLL_STATE_SETTLING:
-                        if (pauseOnFling) {
-                            imageLoader.pause();
-                        } else {
-                            imageLoader.resume();
-                        }
-                        break;
-                }
+            switch (newState) {
+                case SCROLL_STATE_DRAGGING:
+                    if (pauseOnScroll) {
+                        Glide.with(context).pauseRequests();
+                    } else {
+                        Glide.with(context).resumeRequests();
+                    }
+                    break;
+                case SCROLL_STATE_IDLE:
+                    Glide.with(context).resumeRequests();
+                    break;
+                case SCROLL_STATE_SETTLING:
+                    if (pauseOnScroll) {
+                        Glide.with(context).pauseRequests();
+                    } else {
+                        Glide.with(context).resumeRequests();
+                    }
+                    break;
+            }
         }
 
         @Override

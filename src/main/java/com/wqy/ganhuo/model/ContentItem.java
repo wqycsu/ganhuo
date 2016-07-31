@@ -115,35 +115,27 @@ public abstract class ContentItem implements Serializable, Comparable<ContentIte
         return -this.publishedAt.compareTo(another.publishedAt);
     }
 
-    public AndroidCache contentImToAndroidCache(int page) {
-        AndroidCache cache = new AndroidCache();
-        cache.setCreatedAt(createdAt);
-        cache.setDesc(desc);
-        cache.setObjectId(_id);
-        cache.setPage(page);
-        cache.setPublishedAt(publishedAt);
-        cache.setUpdatedAt(updatedAt);
-        cache.setType(type);
-        cache.setPlatformType(Constants.PLATFORM_TYPE_ANDROID);
-        cache.setUrl(url);
-        cache.setUsed(used);
-        cache.setWho(who);
-        return cache;
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + _id.hashCode();
+        return result;
     }
 
-    public IOSCache contentImToIOSCache(int page) {
-        IOSCache cache = new IOSCache();
-        cache.setCreatedAt(createdAt);
-        cache.setDesc(desc);
-        cache.setObjectId(_id);
-        cache.setPage(page);
-        cache.setPublishedAt(publishedAt);
-        cache.setUpdatedAt(updatedAt);
-        cache.setType(type);
-        cache.setPlatformType(Constants.PLATFORM_TYPE_IOS);
-        cache.setUrl(url);
-        cache.setUsed(used);
-        cache.setWho(who);
-        return cache;
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || !(o instanceof ContentItem)) {
+            return false;
+        }
+
+        if(this == o) {
+            return true;
+        }
+
+        if(this._id.equals(((ContentItem) o)._id)) {
+            return true;
+        }
+
+        return false;
     }
 }
